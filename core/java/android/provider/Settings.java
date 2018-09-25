@@ -5090,6 +5090,12 @@ public final class Settings {
          */
        public static final String PROXIMITY_ON_WAKE = "proximity_on_wake";
 
+         /**
+         * Unlock keystore with fingerprint after reboot
+         * @hide
+         */
+        public static final String FP_UNLOCK_KEYSTORE = "fp_unlock_keystore";
+
         /**
          * IMPORTANT: If you add a new public settings you also have to add it to
          * PUBLIC_SETTINGS below. If the new setting is hidden you have to add
@@ -5109,7 +5115,7 @@ public final class Settings {
         public static final String[] LEGACY_RESTORE_SETTINGS = {
         };
 
-        /**
+       /**
          * These are all public system settings
          *
          * @hide
@@ -5232,6 +5238,7 @@ public final class Settings {
             PRIVATE_SETTINGS.add(BATTERY_LIGHT_FULL_COLOR);
             PRIVATE_SETTINGS.add(BATTERY_LIGHT_REALLYFULL_COLOR);
             PRIVATE_SETTINGS.add(PROXIMITY_ON_WAKE);
+            PRIVATE_SETTINGS.add(FP_UNLOCK_KEYSTORE);
         }
 
         /**
