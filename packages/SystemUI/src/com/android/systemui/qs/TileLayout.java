@@ -29,7 +29,8 @@ public class TileLayout extends ViewGroup implements QSTileLayout {
     protected int mCellHeight;
     protected int mCellMarginHorizontal;
     protected int mCellMarginVertical;
-    protected int mSidePadding;
+    protected int mSidePaddingStart;
+    protected int mSidePaddingEnd;
     protected int mRows = 1;
     protected int mDefaultColumns;
     protected boolean mShowTitles = true;
@@ -132,6 +133,11 @@ public class TileLayout extends ViewGroup implements QSTileLayout {
         return oldColumns != mColumns;
     }
 
+    public void setSidePadding(int paddingStart, int paddingEnd) {
+        mSidePaddingStart = paddingStart;
+        mSidePaddingEnd = paddingEnd;
+    }
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         // If called with AT_MOST, it will limit the number of rows. If called with UNSPECIFIED
@@ -145,7 +151,7 @@ public class TileLayout extends ViewGroup implements QSTileLayout {
             mRows = (numTiles + mColumns - 1) / mColumns;
         }
         mCellWidth =
-                (availableWidth - (mCellMarginHorizontal * mColumns)) / mColumns;
+                (availableWidth - mSidePaddingStart - mSidePaddingEnd - (mCellMarginHorizontal * mColumns)) / mColumns;
 
         // Measure each QS tile.
         View previousView = this;
@@ -230,7 +236,7 @@ public class TileLayout extends ViewGroup implements QSTileLayout {
     }
 
     protected int getColumnStart(int column) {
-        return getPaddingStart() + mCellMarginHorizontal / 2 +
+        return getPaddingStart() + mSidePaddingStart + mCellMarginHorizontal / 2 +
                 column *  (mCellWidth + mCellMarginHorizontal);
     }
 
