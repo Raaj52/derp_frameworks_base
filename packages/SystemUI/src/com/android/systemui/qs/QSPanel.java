@@ -155,11 +155,11 @@ public class QSPanel extends LinearLayout implements Callback, BrightnessMirrorL
     private QSTileLayout mHorizontalTileLayout;
     protected QSTileLayout mRegularTileLayout;
     protected QSTileLayout mTileLayout;
+    private int mMediaPlayerVisible = 0;
     private int mLastOrientation = -1;
     private int mMediaTotalBottomMargin;
     private int mFooterMarginStartHorizontal;
     private Consumer<Boolean> mMediaVisibilityChangedListener;
-    private boolean mMediaVisible;
 
 
     @Inject
@@ -291,7 +291,6 @@ public class QSPanel extends LinearLayout implements Callback, BrightnessMirrorL
     private CustomSettingsObserver mCustomSettingsObserver;
 
     protected void onMediaVisibilityChanged(Boolean visible) {
-        mMediaVisible = visible;
         switchTileLayout();
         updateBrightnessSliderPosition();
         if (mMediaVisibilityChangedListener != null) {
@@ -530,7 +529,7 @@ public class QSPanel extends LinearLayout implements Callback, BrightnessMirrorL
         if (getTileLayout() == null) {
             return;
         }
-        if (!mMediaVisible) {
+        if (!mMediaHost.getVisible()) {
             int rows = Settings.System.getIntForUser(
                     mContext.getContentResolver(), Settings.System.QS_LAYOUT_ROWS, 3,
                     UserHandle.USER_CURRENT);
@@ -631,8 +630,8 @@ public class QSPanel extends LinearLayout implements Callback, BrightnessMirrorL
                 R.dimen.qs_footer_horizontal_margin);
         mVisualTilePadding = (int) ((tileSize - tileBg) / 2.0f);
         updatePadding();
-
         updatePageIndicator();
+        updateMinRows();
 
         if (mListening) {
             refreshAllTiles();
@@ -722,7 +721,6 @@ public class QSPanel extends LinearLayout implements Callback, BrightnessMirrorL
             if (mHost != null) setTiles(mHost.getTiles());
             newLayout.setListening(mListening);
             if (needsDynamicRowsAndColumns()) {
-                newLayout.setMinRows(horizontal ? 2 : 1);
                 // Let's use 3 columns to match the current layout
                 newLayout.setMaxColumns(horizontal ? 3 : TileLayout.NO_MAX_COLUMNS);
             }
@@ -1386,6 +1384,7 @@ public class QSPanel extends LinearLayout implements Callback, BrightnessMirrorL
     }
 
     public void updateSettings() {
+        updateMinRows();
         if (mTileLayout != null) {
             mTileLayout.updateSettings();
 
@@ -1393,7 +1392,6 @@ public class QSPanel extends LinearLayout implements Callback, BrightnessMirrorL
                 configureTile(r.tile, r.tileView);
             }
         }
-        updateMinRows();
     }
 
     public int getNumColumns() {
