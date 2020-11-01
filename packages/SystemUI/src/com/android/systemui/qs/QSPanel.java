@@ -160,6 +160,7 @@ public class QSPanel extends LinearLayout implements Callback, BrightnessMirrorL
     private int mMediaTotalBottomMargin;
     private int mFooterMarginStartHorizontal;
     private Consumer<Boolean> mMediaVisibilityChangedListener;
+    private boolean mMediaVisible;
 
 
     @Inject
